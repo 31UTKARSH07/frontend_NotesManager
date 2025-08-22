@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router"
+import { Route, Routes } from "react-router-dom"
 import HomePage from "./pages/HomePage"
 import NoteDetailPage from "./pages/NoteDetailPage"
 import CreatePage from "./pages/CreatePage"
@@ -13,7 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/create" element={<CreatePage />} />
-        <Route path="/note/:id" element={<NoteDetailPage />} />
+        <Route path="/notes/:id" element={<NoteDetailPage />} />
         <Route path="/tags/:tag" element={<TagPage/>}/>
       </Routes>
     </div>

@@ -1,6 +1,6 @@
 import { PenSquareIcon, Trash2Icon } from 'lucide-react'
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { formatDate } from '../lib/utils'
 import api from '../lib/axios'
 import toast from 'react-hot-toast'
