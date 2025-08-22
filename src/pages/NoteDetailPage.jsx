@@ -54,9 +54,9 @@ const NoteDetailPage = () => {
       toast.success("Note updated successfully")
       navigate('/')
     } catch (error) {
-      console.log("Error saving the note", error );
+      console.log("Error saving the note", error);
       toast.error("Failed to update note")
-      
+
     } finally {
       setSaving(false);
     }
@@ -107,6 +107,48 @@ const NoteDetailPage = () => {
                   onChange={(e) => setNote({ ...note, content: e.target.value })}
                 />
               </div>
+               
+              <div className="form-control mb-4">
+                <label className="label">
+                  <span className="label-text">Tags</span>
+                </label>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {note.tags?.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="badge badge-primary gap-2"
+                    >
+                      {tag}
+                      <button
+                        type="button"
+                        className="ml-1"
+                        onClick={() => {
+                          const updatedTags = note.tags.filter((_, i) => i !== index);
+                          setNote({ ...note, tags: updatedTags });
+                        }}
+                      >
+                        ❌
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <input
+                  type="text"
+                  placeholder="Type a tag and press Enter"
+                  className="input input-bordered"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      const newTag = e.target.value.trim();
+                      if (newTag && !note.tags?.includes(newTag)) {
+                        setNote({ ...note, tags: [...(note.tags || []), newTag] });
+                      }
+                      e.target.value = ""; // clear input
+                    }
+                  }}
+                />
+              </div>
+
               <div className="card-actions justify-end">
                 <button className="btn btn-primary " disabled={saving} onClick={handleSave}>
                   {saving ? "Saving..." : "Save Changes"}
