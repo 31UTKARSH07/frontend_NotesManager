@@ -116,13 +116,15 @@ const NoteDetailPage = () => {
                   {note.tags?.map((tag, index) => (
                     <span
                       key={index}
-                      className="badge badge-primary gap-2"
+                      onClick={() => navigate(`/tags/${tag}`)}
+                      className="badge badge-primary gap-2 cursor-pointer hover:opacity-80"
                     >
                       {tag}
                       <button
                         type="button"
                         className="ml-1"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           const updatedTags = note.tags.filter((_, i) => i !== index);
                           setNote({ ...note, tags: updatedTags });
                         }}
@@ -148,7 +150,6 @@ const NoteDetailPage = () => {
                   }}
                 />
               </div>
-
               <div className="card-actions justify-end">
                 <button className="btn btn-primary " disabled={saving} onClick={handleSave}>
                   {saving ? "Saving..." : "Save Changes"}

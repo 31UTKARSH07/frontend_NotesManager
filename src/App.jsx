@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage"
 import NoteDetailPage from "./pages/NoteDetailPage"
 import CreatePage from "./pages/CreatePage"
 import toast from 'react-hot-toast'
+import TagPage from "./pages/TagPage"
 const App = () => {
   return (
     <div className='relative h-full w-full'>
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/create" element={<CreatePage />} />
         <Route path="/note/:id" element={<NoteDetailPage />} />
+        <Route path="/tags/:tag" element={<TagPage/>}/>
       </Routes>
     </div>
   )
