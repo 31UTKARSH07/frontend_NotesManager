@@ -13,7 +13,6 @@ const Navbar = ({ onSearchResults }) => {
     if (!query.trim()) {
       setSearchResults([])
       setShowDropdown(false)
-      // Pass empty results to parent to show all notes
       if (onSearchResults) {
         onSearchResults([])
       }
@@ -100,7 +99,6 @@ const Navbar = ({ onSearchResults }) => {
               }`}
             />
             
-            {/* Clear button when there's a query */}
             {query && (
               <button
                 onClick={handleClearSearch}
@@ -110,7 +108,7 @@ const Navbar = ({ onSearchResults }) => {
               </button>
             )}
 
-            {/* Dropdown for quick navigation */}
+            {/* Dropdown for navigation */}
             {showDropdown && searchResults.length > 0 && (
               <div className="absolute top-full w-full mt-2 bg-base-200 border border-base-content/10 rounded-box shadow-lg z-10 max-h-60 overflow-y-auto">
                 {searchResults.map((note) => (
