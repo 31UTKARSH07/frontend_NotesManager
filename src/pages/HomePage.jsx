@@ -9,8 +9,8 @@ import api from '../lib/axios';
 const HomePage = () => {
   const [isRateLimited, setIsRateLimited] = useState(false);
   const [notes, setNotes] = useState([]);
-  const [allNotes, setAllNotes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [allNotes, setAllNotes] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
 
   const fetchNotes = async () => {
