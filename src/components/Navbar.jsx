@@ -91,14 +91,12 @@ const Navbar = ({ onSearchResults }) => {
               onBlur={handleBlur}
               className="input input-bordered pr-20"
             />
-            
             <SearchIcon
               onClick={handleSearch}
               className={`size-5 absolute right-12 top-1/2 -translate-y-1/2 cursor-pointer ${
                 isSearching ? 'text-primary animate-pulse' : 'text-gray-400 hover:text-primary'
               }`}
             />
-            
             {query && (
               <button
                 onClick={handleClearSearch}
@@ -107,7 +105,6 @@ const Navbar = ({ onSearchResults }) => {
                 ×
               </button>
             )}
-
             {/* Dropdown for navigation */}
             {showDropdown && searchResults.length > 0 && (
               <div className="absolute top-full w-full mt-2 bg-base-200 border border-base-content/10 rounded-box shadow-lg z-10 max-h-60 overflow-y-auto">
