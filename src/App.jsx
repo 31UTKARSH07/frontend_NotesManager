@@ -1,9 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import PrivateRoute from "./components/PrivateRoute.jsx";
 import NotesNotFound from "./components/NotesNotFound";
 import NoteDetailPage from "./pages/NoteDetailPage";
 import CreatePage from "./pages/CreatePage";
@@ -20,12 +18,10 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route element={<PrivateRoute />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/create" element={<CreatePage />} />
           <Route path="/note/:id" element={<NoteDetailPage />} />
           <Route path="/tags/:tag" element={<TagPage />} />
-        </Route>
         <Route path="*" element={<NotesNotFound />} />
       </Routes>
     </div>

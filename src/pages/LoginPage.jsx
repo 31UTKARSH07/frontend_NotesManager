@@ -1,21 +1,42 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import AuthContext from "../context/authContext.jsx";
+import React, { useState } from "react";
+import { Link,useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const { login } = useContext(AuthContext);
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [message, setMessage] = useState("");
 
-  console.log("LoginPage rendered");
-
-  const { email, password } = formData;
+  const { username, password } = formData;
+  const navigate = useNavigate();
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  const onSubmit = (e) => {
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    login(email, password);
+
+    try {
+      const res = await fetch("http://localhost:5001/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage("✅ Login successful!");
+        console.log("User logged in:", data);
+        // Later: you can save token in localStorage
+      } else {
+        setMessage(`❌ ${data.message || "Login failed"}`);
+      }
+      navigate("/"); // Redirect to home page after login
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Something went wrong");
+    }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-transparent">
       <div className="bg-gray-900 p-8 rounded-lg shadow-xl w-full max-w-md border border-gray-700">
@@ -25,20 +46,20 @@ const LoginPage = () => {
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-sm font-medium text-gray-300 mb-1"
             >
-              Email Address
+              Username
             </label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
+              type="text"
+              id="username"
+              name="username"
+              value={username}
               onChange={onChange}
-              placeholder="Enter your email"
               required
-              className="block w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition duration-200"
+              className="block w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-2 focus:ring-emerald-500"
+              placeholder="Enter your username"
             />
           </div>
           <div>
@@ -54,23 +75,28 @@ const LoginPage = () => {
               name="password"
               value={password}
               onChange={onChange}
-              placeholder="Enter your password"
               required
-              className="block w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition duration-200"
+              className="block w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-2 focus:ring-emerald-500"
+              placeholder="Enter your password"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-md transition"
           >
             Login
           </button>
         </form>
+
+        {message && (
+          <p className="mt-4 text-center text-sm text-gray-300">{message}</p>
+        )}
+
         <p className="mt-6 text-center text-gray-400">
           Don't have an account?{" "}
           <Link
             to="/register"
-            className="text-emerald-400 hover:text-emerald-300 font-medium transition duration-200"
+            className="text-emerald-400 hover:text-emerald-300 font-medium"
           >
             Register here
           </Link>
