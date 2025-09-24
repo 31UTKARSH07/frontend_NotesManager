@@ -1,11 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import NotesNotFound from "./components/NotesNotFound";
-import NoteDetailPage from "./pages/NoteDetailPage";
-import CreatePage from "./pages/CreatePage";
-import TagPage from "./pages/TagPage";
+import HomePage from "./pages/HomePage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
+import NotesNotFound from "./components/NotesNotFound.jsx";
+import NoteDetailPage from "./pages/NoteDetailPage.jsx";
+import TagPage from "./pages/TagPage.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
+
 const App = () => {
   console.log("App rendered"); 
   return (
@@ -16,10 +17,10 @@ const App = () => {
       />
       {/* <button className='btn btn-primary'>Click Me</button> */}
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<RegisterPage />} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="/create" element={<CreatePage />} />
+        <Route path="/login" element={<LoginPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/note/:id" element={<NoteDetailPage />} />
           <Route path="/tags/:tag" element={<TagPage />} />
         <Route path="*" element={<NotesNotFound />} />

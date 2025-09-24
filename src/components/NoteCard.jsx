@@ -1,44 +1,76 @@
-import { PenSquareIcon, Trash2Icon } from 'lucide-react'
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { formatDate } from '../lib/utils'
-import api from '../lib/axios'
-import toast from 'react-hot-toast'
-
+import { PenSquare, Trash2 } from "lucide-react"; 
+import React from "react";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import api from "../lib/axios";
+import { formatDate } from "../lib/utils"; 
 
 export const NoteCard = ({ note, setNotes }) => {
-    const handleDelete = async (e, id) => {
-        e.preventDefault();//get rid of the navigate behaviour
-        if (!window.confirm("Are you sure you want to delete this note?")) return;
-        try {
-            await api.delete(`/notes/${id}`)
-            setNotes((prev) => prev.filter((note) => note._id !== id)) // get rid of the deleted one
-            toast.success("Note deleted successfully")
-        } catch (error) {
-            console.log("Error in handleDelete", error);
-            toast.error("Failed to delete note")
-        }
+  const handleDelete = async (e, id) => {
+    e.preventDefault(); 
+    if (!window.confirm("Are you sure you want to delete this note?")) return;
+    try {
+      // Optimistic UI update for a faster feel
+      setNotes((prev) => prev.filter((note) => note._id !== id));
+      await api.delete(`/notes/${id}`);
+      toast.success("Note deleted successfully");
+    } catch (error) {
+      console.log("Error in handleDelete", error);
+      toast.error("Failed to delete note");
+      // Here you might want to add the note back if the API call fails
     }
-    return (
-        <Link to={`/note/${note._id}`}
-            className="card bg-base-100 hover:shadow-lg transition-all duration-200
-    border-t-4 border-solid border-[#00FF9D]"
-        >
-            <div className='card-body'>
-                <h3 className='card-title text-base-content'>{note.title}</h3>
-                <p className='text-base-content/70 line-clamp-3'>{note.content}</p>
-                <div className='card-actions justify-between items-center mt-4'>
-                    <span className='text-sm test-base-content/60'>
-                        {formatDate(new Date(note.createdAt))}
-                    </span>
-                    <div className='flex items-center gap-1'>
-                        <PenSquareIcon className='size-4' />
-                        <button className='btn btn-ghost btn-xs text-error' onClick={(e) => handleDelete(e, note._id)}>
-                            <Trash2Icon className="size-4" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </Link>
-    )
-}
+  };
+
+  const handleEdit = (e) => {
+    e.preventDefault();
+    // Here you would navigate to the edit page or open a modal
+    // For now, let's just log it.
+    // navigate(`/note/edit/${note._id}`);
+    console.log("Edit note:", note._id);
+    toast("Edit functionality coming soon!");
+  };
+
+  const truncate = (str, num) => {
+    return str.length > num ? str.slice(0, num) + "..." : str;
+  };
+
+  return (
+    <Link
+      to={`/note/${note._id}`}
+      className="group flex flex-col bg-white rounded-lg border border-slate-200 
+                       hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+    >
+      <div className="w-full h-1.5 bg-[#00FF9D] rounded-t-lg"></div>
+
+      <div className="p-6 flex-grow">
+        <h3 className="font-bold text-lg text-slate-800 mb-2">{note.title}</h3>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          {truncate(note.content, 120)}
+        </p>
+      </div>
+
+      <div className="border-t border-slate-100 px-6 py-4 flex justify-between items-center">
+        <span className="text-xs text-slate-500">
+          {formatDate(new Date(note.createdAt))}
+        </span>
+
+        <div className="flex items-center gap-2 text-slate-400">
+          <button
+            onClick={handleEdit}
+            className="p-2 rounded-md hover:bg-slate-100 hover:text-slate-700 transition-colors"
+            aria-label="Edit Note"
+          >
+            <PenSquare size={16} />
+          </button>
+          <button
+            onClick={(e) => handleDelete(e, note._id)}
+            className="p-2 rounded-md hover:bg-red-100 hover:text-red-600 transition-colors"
+            aria-label="Delete Note"
+          >
+            <Trash2 size={16} />
+          </button>
+        </div>
+      </div>
+    </Link>
+  );
+};

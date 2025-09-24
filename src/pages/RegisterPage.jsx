@@ -1,5 +1,9 @@
+// src/components/RegisterPage.jsx
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion"; // Import motion
+import api from "../lib/axios.js";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -12,27 +16,24 @@ const RegisterPage = () => {
   const { name, email, password, username } = formData;
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  //const navigate = useNavigate();
+
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5001/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password,username }),
+      const res = await api.post("/auth/register", {
+        name,
+        email,
+        password,
+        username,
       });
-      const data = await res.json();
-      if (res.ok) {
-        setMessage("✅ Registration successful! You can now log in.");
-        setFormData({ name: "", email: "", password: "", username: "" });
-        setTimeout(() => navigate("/login"), 1500);
-        console.log("User registered:", data);
-      } else {
-        setMessage(`❌ ${data.message || "Registration failed"}`);
-      }
+      setMessage("✅ Registration successful! Redirecting to login...");
+      setFormData({ name: "", email: "", password: "", username: "" });
+      setTimeout(() => navigate("/login"), 1500);
+      console.log("User registered:", res.data);
     } catch (err) {
       console.error(err);
       setMessage("❌ Something went wrong");
@@ -41,17 +42,33 @@ const RegisterPage = () => {
     }
   };
 
+  // Framer Motion Variants
+  const formVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.7, ease: "easeOut" },
+    },
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-transparent">
-      <div className="bg-gray-900 p-8 rounded-lg shadow-xl w-full max-w-md border border-gray-700">
-        <h1 className="text-3xl font-bold text-white mb-6 text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-blue-200 p-4">
+      <motion.div
+        variants={formVariants}
+        initial="hidden"
+        animate="visible"
+        className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md border border-blue-200 transform hover:scale-[1.01] transition-transform duration-300"
+      >
+        <h1 className="text-3xl font-bold text-blue-800 mb-6 text-center">
           Create an Account
         </h1>
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-5">
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-slate-700 mb-1"
             >
               Name
             </label>
@@ -62,14 +79,14 @@ const RegisterPage = () => {
               value={name}
               onChange={onChange}
               required
-              className="block w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-2 focus:ring-emerald-500"
+              className="block w-full px-4 py-2 bg-blue-50 border border-blue-300 rounded-md text-slate-800 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all duration-200"
               placeholder="Enter your name"
             />
           </div>
           <div>
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-slate-700 mb-1"
             >
               Username
             </label>
@@ -80,14 +97,14 @@ const RegisterPage = () => {
               value={username}
               onChange={onChange}
               required
-              className="block w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-2 focus:ring-emerald-500"
+              className="block w-full px-4 py-2 bg-blue-50 border border-blue-300 rounded-md text-slate-800 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all duration-200"
               placeholder="Enter your username"
             />
           </div>
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-slate-700 mb-1"
             >
               Email Address
             </label>
@@ -98,14 +115,14 @@ const RegisterPage = () => {
               value={email}
               onChange={onChange}
               required
-              className="block w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-2 focus:ring-emerald-500"
+              className="block w-full px-4 py-2 bg-blue-50 border border-blue-300 rounded-md text-slate-800 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all duration-200"
               placeholder="Enter your email"
             />
           </div>
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-slate-700 mb-1"
             >
               Password
             </label>
@@ -117,33 +134,43 @@ const RegisterPage = () => {
               onChange={onChange}
               required
               minLength="6"
-              className="block w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-2 focus:ring-emerald-500"
+              className="block w-full px-4 py-2 bg-blue-50 border border-blue-300 rounded-md text-slate-800 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all duration-200"
               placeholder="Create a password"
             />
           </div>
-          <button
+          <motion.button
             type="submit"
             disabled={loading}
-            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-md transition"
+            whileHover={{ scale: 1.02, backgroundColor: "#047857" }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full bg-emerald-600 text-white font-semibold py-3 px-4 rounded-md shadow-lg transition-colors duration-200"
           >
             {loading ? "Creating Account..." : "Register"}
-          </button>
+          </motion.button>
         </form>
 
         {message && (
-          <p className="mt-4 text-center text-sm text-gray-300">{message}</p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={`mt-4 text-center text-sm font-medium ${
+              message.startsWith("✅") ? "text-emerald-600" : "text-red-500"
+            }`}
+          >
+            {message}
+          </motion.p>
         )}
 
-        <p className="mt-6 text-center text-gray-400">
+        <p className="mt-6 text-center text-slate-600">
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-emerald-400 hover:text-emerald-300 font-medium"
+            className="text-sky-600 hover:text-sky-700 font-semibold transition-colors duration-200"
           >
             Login here
           </Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 };

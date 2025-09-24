@@ -1,74 +1,69 @@
-import { PlusIcon, SearchIcon } from 'lucide-react'
-import { Link } from "react-router-dom"
-import { useState } from 'react'
-import axios from '../lib/axios'
+import { PlusIcon, SearchIcon } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import axios from "../lib/axios";
 
-const Navbar = ({ onSearchResults }) => {
-  const [query, setQuery] = useState("")
-  const [searchResults, setSearchResults] = useState([])
-  const [showDropdown, setShowDropdown] = useState(false)
-  const [isSearching, setIsSearching] = useState(false)
+const Navbar = ({ onSearchResults, onCreateNote }) => {
+  const [query, setQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const handleSearch = async () => {
     if (!query.trim()) {
-      setSearchResults([])
-      setShowDropdown(false)
+      setSearchResults([]);
+      setShowDropdown(false);
       if (onSearchResults) {
-        onSearchResults([])
+        onSearchResults([]);
       }
-      return
+      return;
     }
-
-    setIsSearching(true)
+    setIsSearching(true);
     try {
-      const response = await axios.get(`/notes/search?query=${encodeURIComponent(query.trim())}`)
-      setSearchResults(response.data)
-      setShowDropdown(true)
-      
+      const response = await axios.get(
+        `/notes/search?query=${encodeURIComponent(query.trim())}`
+      );
+      setSearchResults(response.data);
+      setShowDropdown(true);
       if (onSearchResults) {
-        onSearchResults(response.data,true)
+        onSearchResults(response.data, true);
       }
     } catch (error) {
-      console.error('Search error:', error)
-      setSearchResults([])
-      setShowDropdown(false)
+      console.error("Search error:", error);
+      setSearchResults([]);
+      setShowDropdown(false);
       if (onSearchResults) {
-        onSearchResults([],false)
+        onSearchResults([], false);
       }
     } finally {
-      setIsSearching(false)
+      setIsSearching(false);
     }
-  }
-
+  };
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      handleSearch()
+      handleSearch();
     }
-  }
-
+  };
   const handleBlur = () => {
     setTimeout(() => {
-      setShowDropdown(false)
-    }, 200)
-  }
-
+      setShowDropdown(false);
+    }, 200);
+  };
   const handleClearSearch = () => {
-    setQuery("")
-    setSearchResults([])
-    setShowDropdown(false)
+    setQuery("");
+    setSearchResults([]);
+    setShowDropdown(false);
     if (onSearchResults) {
-      onSearchResults([],false)
+      onSearchResults([], false);
     }
-  }
-
+  };
   const handleNoteSelect = (note) => {
     if (onSearchResults) {
-      onSearchResults([note], true)
+      onSearchResults([note], true);
     }
-    setShowDropdown(false)
-    setQuery(note.title)
-  }
-
+    setShowDropdown(false);
+    setQuery(note.title);
+  };
   return (
     <header className="bg-base-300 border-base-content/10">
       <div className="mx-auto max-w-6xl p-4">
@@ -85,7 +80,7 @@ const Navbar = ({ onSearchResults }) => {
               onKeyDown={handleKeyDown}
               onFocus={() => {
                 if (searchResults.length > 0) {
-                  setShowDropdown(true)
+                  setShowDropdown(true);
                 }
               }}
               onBlur={handleBlur}
@@ -94,7 +89,9 @@ const Navbar = ({ onSearchResults }) => {
             <SearchIcon
               onClick={handleSearch}
               className={`size-5 absolute right-12 top-1/2 -translate-y-1/2 cursor-pointer ${
-                isSearching ? 'text-primary animate-pulse' : 'text-gray-400 hover:text-primary'
+                isSearching
+                  ? "text-primary animate-pulse"
+                  : "text-gray-400 hover:text-primary"
               }`}
             />
             {query && (
@@ -125,16 +122,18 @@ const Navbar = ({ onSearchResults }) => {
               </div>
             )}
           </div>
-          <div>
-            <Link to="/create" className="btn btn-primary">
+          <div className="flex items-center">
+            <button
+              onClick={onCreateNote}
+              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors"
+            >
               <PlusIcon className="size-5" />
               <span>New Note</span>
-            </Link>
+            </button>
           </div>
         </div>
       </div>
     </header>
-  )
-}
-
-export default Navbar
+  );
+};
+export default Navbar;
