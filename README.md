@@ -25,7 +25,7 @@ A modern, intelligent note-taking application built with React and featuring clo
 
 1. Clone the repository:
 ```bash
-git clone <frontend_NotesManager>
+git clone https://github.com/31UTKARSH07/frontend_NotesManager.git
 cd thinkboard
 ```
 
