@@ -34,7 +34,6 @@ const HomePage = () => {
       setLoading(false);
     }
   };
-
   const handleSearchResults = (searchResults, isSearch) => {
     setIsSearchActive(isSearch);
     if (isSearch) {
@@ -43,31 +42,25 @@ const HomePage = () => {
       setNotes(allNotes);
     }
   };
-
   const showAllNotes = () => {
     setNotes(allNotes);
     setIsSearchActive(false);
   };
-
   useEffect(() => {
     fetchNotes();
   }, []);
-
   const handleOpenCreateModal = () => {
     setEditingNote(null);
     setIsModalOpen(true);
   };
-
   const handleOpenEditModal = (note) => {
     setEditingNote(note);
     setIsModalOpen(true);
   };
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingNote(null);
   };
-
   const handleSavedNote = async (noteData) => {
     try {
       if (editingNote) {
@@ -86,7 +79,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-sky-100">
+    <div className="min-h-screen transition-colors duration-500 bg-base-200 text-base-content">
       <Navbar
         onSearchResults={handleSearchResults}
         onCreateNote={handleOpenCreateModal}
@@ -97,14 +90,14 @@ const HomePage = () => {
       <main className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className="pt-8">
           {isSearchActive && (
-            <div className="mb-6 p-3 bg-indigo-100 border border-indigo-200 rounded-lg flex justify-between items-center text-sm">
-              <p className="text-indigo-800">
+            <div className="mb-6 p-3 bg-base-300 border border-base-300 rounded-lg flex justify-between items-center text-sm">
+              <p className="text-base-content">
                 Showing <span className="font-semibold">{notes.length}</span>{" "}
                 search result{notes.length !== 1 ? "s" : ""}.
               </p>
               <button
                 onClick={showAllNotes}
-                className="font-medium text-indigo-600 hover:text-indigo-800"
+                className="font-medium text-primary hover:underline"
               >
                 Show All Notes
               </button>
@@ -125,7 +118,7 @@ const HomePage = () => {
           )}
 
           {!loading && notes.length > 0 && !isRateLimited && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg-grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {notes.map((note) => (
                 <NoteCard
                   key={note._id}

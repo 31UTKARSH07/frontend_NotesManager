@@ -24,9 +24,7 @@ const LoginPage = () => {
       });
 
       setMessage("✅ Login successful!");
-      // With HttpOnly cookies, the browser handles the token automatically.
-      // No need to save anything to localStorage.
-      setTimeout(() => navigate("/home"), 500); // Redirect to your protected page
+      setTimeout(() => navigate("/home"), 500); 
     } catch (err) {
       console.error(err);
       const errorMessage =

@@ -2,8 +2,10 @@ import { PlusIcon, SearchIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "../lib/axios";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = ({ onSearchResults, onCreateNote }) => {
+  
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -68,9 +70,53 @@ const Navbar = ({ onSearchResults, onCreateNote }) => {
     <header className="bg-base-300 border-base-content/10">
       <div className="mx-auto max-w-6xl p-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-primary font-mono tracking-tighter">
-            ThinkBoard
-          </h1>
+          {/* LEFT SIDE — App Name + Nav Links */}
+          <div className="flex items-center gap-8">
+            <Link
+              to="/"
+              className="text-3xl font-bold text-primary font-mono tracking-tighter"
+            >
+              ThinkBoard
+            </Link>
+            <div className="flex items-center gap-2">
+              <Link to="/home" className="btn btn-ghost">
+                Home
+              </Link>
+              <Link to="/archived" className="btn btn-ghost">
+                Archived
+              </Link>
+              <Link to="/trash" className="btn btn-ghost">
+                Trash
+              </Link>
+              <Link to="/profile" className="btn btn-ghost">
+                Profile
+              </Link>
+            </div>
+
+            {/* NAV LINKS */}
+            {/* <nav className="flex items-center gap-6 text-sm font-medium text-base-content/80">
+              <Link
+                to="/archived"
+                className="hover:text-primary transition-colors"
+              >
+                Archived
+              </Link>
+              <Link
+                to="/trash"
+                className="hover:text-primary transition-colors"
+              >
+                Trash
+              </Link>
+              <Link
+                to="/profile"
+                className="hover:text-primary transition-colors"
+              >
+                Profile
+              </Link>
+            </nav> */}
+          </div>
+
+          {/* MIDDLE — Search Bar */}
           <div className="relative flex items-center gap-2">
             <input
               type="text"
@@ -79,9 +125,7 @@ const Navbar = ({ onSearchResults, onCreateNote }) => {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               onFocus={() => {
-                if (searchResults.length > 0) {
-                  setShowDropdown(true);
-                }
+                if (searchResults.length > 0) setShowDropdown(true);
               }}
               onBlur={handleBlur}
               className="input input-bordered pr-20"
@@ -102,7 +146,7 @@ const Navbar = ({ onSearchResults, onCreateNote }) => {
                 ×
               </button>
             )}
-            {/* Dropdown for navigation */}
+            {/* SEARCH DROPDOWN */}
             {showDropdown && searchResults.length > 0 && (
               <div className="absolute top-full w-full mt-2 bg-base-200 border border-base-content/10 rounded-box shadow-lg z-10 max-h-60 overflow-y-auto">
                 {searchResults.map((note) => (
@@ -122,7 +166,9 @@ const Navbar = ({ onSearchResults, onCreateNote }) => {
               </div>
             )}
           </div>
-          <div className="flex items-center">
+
+          {/* RIGHT SIDE — New Note + Theme Toggle */}
+          <div className="flex items-center gap-4">
             <button
               onClick={onCreateNote}
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors"
@@ -130,6 +176,7 @@ const Navbar = ({ onSearchResults, onCreateNote }) => {
               <PlusIcon className="size-5" />
               <span>New Note</span>
             </button>
+            <ThemeToggle />
           </div>
         </div>
       </div>

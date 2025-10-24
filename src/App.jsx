@@ -6,26 +6,29 @@ import NotesNotFound from "./components/NotesNotFound.jsx";
 import NoteDetailPage from "./pages/NoteDetailPage.jsx";
 import TagPage from "./pages/TagPage.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
+import ArchivedPage from "./pages/ArchivedPage.jsx";
+import TrashPage from "./pages/TrashPage.jsx";
+import SharedNotePage from "./pages/SharedNotePage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 const App = () => {
-  console.log("App rendered"); 
   return (
-    <div className="relative h-full w-full">
-      <div
-        className="absolute inset-0 -z-10 min-h-screen w-full items-center
-       px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_60%,#00FF9D40_100%)]"
-      />
-      {/* <button className='btn btn-primary'>Click Me</button> */}
+    <div className="p-5">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/note/:id" element={<NoteDetailPage />} />
-          <Route path="/tags/:tag" element={<TagPage />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/archived" element={<ArchivedPage />} />
+        <Route path="/trash" element={<TrashPage />} />
+        <Route path="/note/:id" element={<NoteDetailPage />} />
+        <Route path="/tags/:tag" element={<TagPage />} />
+        <Route path="/share/:sharedId" element={<SharedNotePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<NotesNotFound />} />
       </Routes>
     </div>
   );
 };
+
 export default App;
