@@ -35,7 +35,7 @@ const ProfilePage = () => {
 
     const toastId = toast.loading('Uploading picture...');
     try {
-      const response = await axios.put('/users/profile/picture', formData, {
+      const response = await axios.put('/user/profile/picture', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
